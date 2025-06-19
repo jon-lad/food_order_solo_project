@@ -26,7 +26,7 @@ I would like to receive a text such as "Thank you! Your order was placed and wil
                                           │  Process order class       │ 
       ┌─────────────────────────┐         │                            │ 
       │                         │         │  message customer()        │ 
-      │  itnerface class        │         │                            │ 
+      │  interface class        │         │                            │ 
       │                         |─────────►                            │ 
       │   allows user to order  │         │                            │ 
       │   items                 │         │                            │ 
@@ -41,13 +41,13 @@ I would like to receive a text such as "Thank you! Your order was placed and wil
  │                                 │    │    - add item()               │
  │  list of food items with price  │    │    - remove item()            │
  │     - add item()                │    │    - check items with total() │
- │     - display items()           │    │                               │
+ │     - list items()              │    │                               │
  │                                 │    │                               │
  └─────────────────────────────────┘    │                               │
                         ▲               └───────────────────────────────┘
-                        │                     ▲                          
-                        │                     │                          
-                  ┌─────┴─────────────────────┴──┐                       
+                        │                                              
+                        │                                               
+                  ┌─────┴─────────────────────-──┐                       
                   │                              │                       
                   │   food class                 │                       
                   │                              │                       
@@ -86,13 +86,6 @@ class Menu:
         #   dish: Dish
         # Side effects:
         #   adds dish to menu list
-        pass # No code here yet
-
-    def remove_dish(self, dish):
-        # Parameters:
-        #   dish: Dish
-        # Side effects:
-        #   removes dish from menu list
         pass # No code here yet
 
     def get_menu(self):
@@ -198,30 +191,210 @@ class OrderProcessor:
 _Make a list of examples of how the class will behave in different situations._
 
 ``` python
+'''
+Given a Dish
+we can add it to the menu
+'''
+menu = Menu()
+burger = Dish("Burger", 599)
+
+menu.add(burger)
+
+actual = menu.get_menu()
+
+expected = burger
+
+'''
+Given multiple Dishes
+we can select one by item number
+'''
+menu = Menu()
+burger = Dish("Burger", 599)
+pizza = Dish("Pizza", 1099)
+
+menu.add(burger)
+menu.add(pizza)
+
+actual = menu.get_dish(1)
+
+expected = burger
+
+'''
+Given a menu
+interface.start_ordering prints menu to the console 
+'''
+burger = Dish("Burger", 599)
+pizza = Dish("Pizza", 1099)
+menu = Menu()
+menu.add(burger)
+menu.add(pizza)
+interface = Interface(menu)
+
+actual = capsys.interface.start_ordering()
+
+expected = """Welcome! Please enter the item number to add to your order.
+
+(1) Burger : £5.99
+(2) Pizza : £10.99
+
+Please enter 'order' to see your order."""
+
+'''
+Given a menu and a user inputting 1
+interface.start_ordering prints you have ordered a burger
+'''
+burger = Dish("Burger", 599)
+pizza = Dish("Pizza", 1099)
+menu = Menu()
+menu.add(burger)
+menu.add(pizza)
+interface = Interface(menu)
+
+with patch('builtins.input', return_value='1')
+    actual = capsys.interface.start_ordering()
+
+    expected = """You have added a burger to your order
+    Please enter the item number to add another item to your order.
+    Enter 'order' to see your order"""
+
+'''
+Given a menu and a user inputting 1 then 2 then order
+order is output to the console with total price
+'''
+#@patch('builtins.input')
+#def test_
+burger = Dish("Burger", 599)
+pizza = Dish("Pizza", 1099)
+menu = Menu()
+menu.add(burger)
+menu.add(pizza)
+interface = Interface(menu)
+
+mock_inputs.side_effect = ['1', 'order']
+
+actual = capsys.interface.start_ordering()
+
+expected = """Your order:
+
+(1) Burger : £5.99
+(2) Pizza : £10.99
+
+Total: £16.98
+
+Please enter item number to remove from your order.
+Please enter 'menu' to return to the menu.
+please enter 'place' to place your order."""
+
+'''
+Given a menu and a user inputting 1 then order then menu
+order is output to the console with total price
+'''
+#@patch('builtins.input')
+#def test_
+burger = Dish("Burger", 599)
+pizza = Dish("Pizza", 1099)
+menu = Menu()
+menu.add(burger)
+menu.add(pizza)
+interface = Interface(menu)
+
+mock_inputs.side_effect = ['1', 'order', 'menu']
+
+actual = capsys.interface.start_ordering()
+
+expected = """Welcome! Please enter the item number to add to your order.
+
+(1) Burger : £5.99
+(2) Pizza : £10.99
+
+Please enter 'order' to see your order."""
+
+'''
+Given a menu and a user inputting 1 then order then 1
+an empty is output to the console with 0 total price
+'''
+#@patch('builtins.input')
+#def test_
+burger = Dish("Burger", 599)
+pizza = Dish("Pizza", 1099)
+menu = Menu()
+menu.add(burger)
+menu.add(pizza)
+interface = Interface(menu)
+
+mock_inputs.side_effect = ['1', 'order', '1']
+
+actual = capsys.interface.start_ordering()
+
+expected = """Your order:
+
+No items in order.
+
+Total: £0.00
+
+Please enter item number to remove from your order.
+Please enter 'menu' to return to the menu.
+please enter 'place' to place your order."""
+
+'''
+Given a menu and a user inputting 1 then order then place
+the customer is asked to enter their phone number
+'''
+#@patch('builtins.input')
+#def test_
+burger = Dish("Burger", 599)
+pizza = Dish("Pizza", 1099)
+menu = Menu()
+menu.add(burger)
+menu.add(pizza)
+interface = Interface(menu)
+
+mock_inputs.side_effect = ['1', 'order', 'place']
+
+actual = capsys.interface.start_ordering()
+
+expected = "Please enter a mobile number for confirmation."
+
+'''
+Given a menu and a user inputting 1 then order then place then a mobile number
+the customer recieves confirmation that the order has been placed in th console
+'''
+#@patch('builtins.input')
+#def test_
+burger = Dish("Burger", 599)
+pizza = Dish("Pizza", 1099)
+menu = Menu()
+menu.add(burger)
+menu.add(pizza)
+interface = Interface(menu)
+
+mock_inputs.side_effect = ['1', 'order', 'place', "07000000000"]
+
+actual = capsys.interface.start_ordering()
+
+expected = """Your order has been placed we will send a text to 
+07000000000 to confim an expected dlivery time."""
+
+'''
+Given a menu and a user inputting 1 then order then place then a mobile number
+the customer recieves confirmation that the order has been placed in th console
+'''
+#@patch('builtins.input')
+#def test_
+burger = Dish("Burger", 599)
+pizza = Dish("Pizza", 1099)
+menu = Menu()
+menu.add(burger)
+menu.add(pizza)
+interface = Interface(menu)
+client = Mock()
+interface.order_processer = OrderProcessor( "test_SID" , "test_Auth", client)
 
 
-"""
-Given a name and a task
-#remind reminds the user to do the task
-"""
-reminder = Reminder("Kay")
-reminder.remind_me_to("Walk the dog")
-reminder.remind() # => "Walk the dog, Kay!"
+mock_inputs.side_effect = ['1', 'order', 'place', "07000000000"]
 
-"""
-Given a name and no task
-#remind raises an exception
-"""
-reminder = Reminder("Kay")
-reminder.remind() # raises an error with the message "No task set."
 
-"""
-Given a name and an empty task
-#remind still reminds the user to do the task, even though it looks odd
-"""
-reminder = Reminder("Kay")
-reminder.remind_me_to("")
-reminder.remind() # => ", Kay!"
+client.messsages.create.assert_called_with(to="+447000000000", from_="+447000000001", body="Thank you! Your order was placed and will be delivered before 18:52")
 ```
 
 _Encode each example as a test. You can add to the above list as you go._

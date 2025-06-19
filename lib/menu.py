@@ -14,13 +14,6 @@ class Menu:
         #   adds dish to menu list
         pass # No code here yet
 
-    def remove_dish(self, dish):
-        # Parameters:
-        #   dish: Dish
-        # Side effects:
-        #   removes dish from menu list
-        pass # No code here yet
-
     def get_menu(self):
         # Returns:
         #   a list of dishes available
