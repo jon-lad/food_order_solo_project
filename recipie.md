@@ -415,7 +415,7 @@ expected = """Your order has been placed we will send a text to
 
 '''
 Given a menu and a user inputting 1 then order then place then a mobile number
-the customer recieves confirmation that the order has been placed in th console
+the customer recieves confirmation that the order has been placed as a message
 '''
 #@patch('builtins.input')
 #def test_
@@ -570,7 +570,7 @@ expected = client
 
 #Interface
 '''
-OrderProcessor Constructs
+Interface Constructs
 '''
 menu = Mock()
 interface = Interface(menu)
@@ -586,7 +586,8 @@ expected = menu
 #Test interface if invalid input is entered
 #Test interface if removing item not in order
 #Test interface if adding item not on menu
-#
+#Test orderProcessor if given an ivalid number
+#Mock unit tests for all
 ```
 _Encode each example as a test. You can add_dish to the above list as you go._
 

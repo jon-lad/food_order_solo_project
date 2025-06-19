@@ -1,27 +1,12 @@
 class Menu:
-    # User-facing properties:
-    #   dishes: list of Dish objects
-
     def __init__(self):
-        # Side effects:
-        #   Initialises the menu set
-        pass # No code here yet
+        self.__food_items = []
 
     def add_dish(self, dish):
-        # Parameters:
-        #   dish: Dish
-        # Side effects:
-        #   adds dish to menu list
-        pass # No code here yet
+        self.__food_items.append(dish) 
 
     def get_menu(self):
-        # Returns:
-        #   a list of dishes available
-        pass # No code here yet
+        return self.__food_items
 
     def get_dish(self, item_number):
-        # Parameters:
-        #   item_number: Dish
-        # Returns:
-        #   a copy of the dish available at position item_number
-        pass # No code here yet
+        return self.get_menu()[item_number - 1]
