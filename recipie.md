@@ -38,9 +38,9 @@ I would like to receive a text such as "Thank you! Your order was placed and wil
  ┌───────────────┼─────────────────┐    │ order class                   │
  │                                 │    │                               │
  │  menu  class                    │    │ list of selected items        │
- │                                 │    │    - add item()               │
+ │                                 │    │    - add_dish item()          │
  │  list of food items with price  │    │    - remove item()            │
- │     - add item()                │    │    - check items with total() │
+ │     - add_dish item()           │    │    - check items with total() │
  │     - list items()              │    │                               │
  │                                 │    │                               │
  └─────────────────────────────────┘    │                               │
@@ -71,6 +71,13 @@ class Dish:
         #   Sets the name property of the self object
         #   Sets the name property of the self object
         pass # No code here yet
+
+    def __repr__(self):
+        #Returns the name and price of the dish as a string
+        pass
+
+    def __eq__(self, other)
+        #Returns true if atributes are the same
 
 class Menu:
     # User-facing properties:
@@ -143,7 +150,7 @@ class Interface:
     def start_ordering(self):
         # Side effects:
         #   prints dishes and prices to console
-        #   ask user if they want to add dish to order
+        #   ask user if they want to add_dish dish to order
         #   adds selected dishes
         #   if user asks to see their order calls view_order
         pass
@@ -198,11 +205,40 @@ we can add it to the menu
 menu = Menu()
 burger = Dish("Burger", 599)
 
-menu.add(burger)
+menu.add_dish(burger)
 
 actual = menu.get_menu()
 
-expected = burger
+expected = [burger]
+
+'''
+Given multiple of the same Dish
+get_menu only returns unique dishes
+'''
+menu = Menu()
+burger = Dish("Burger", 599)
+
+menu.add_dish(burger)
+menu.add_dish(burger)
+
+actual = menu.get_menu()
+
+expected = [burger]
+
+'''
+Given different Dishes with the same attributes
+get_menu only returns unique dishes
+'''
+menu = Menu()
+burger = Dish("Burger", 599)
+burger_1 = Dish("Burger", 599)
+
+menu.add_dish(burger)
+menu.add_dish(burger_1)
+
+actual = menu.get_menu()
+
+expected = [burger]
 
 '''
 Given multiple Dishes
@@ -212,12 +248,14 @@ menu = Menu()
 burger = Dish("Burger", 599)
 pizza = Dish("Pizza", 1099)
 
-menu.add(burger)
-menu.add(pizza)
+menu.add_dish(burger)
+menu.add_dish(pizza)
 
 actual = menu.get_dish(1)
 
 expected = burger
+
+assert actual == expected
 
 '''
 Given a menu
@@ -226,13 +264,13 @@ interface.start_ordering prints menu to the console
 burger = Dish("Burger", 599)
 pizza = Dish("Pizza", 1099)
 menu = Menu()
-menu.add(burger)
-menu.add(pizza)
+menu.add_dish(burger)
+menu.add_dish(pizza)
 interface = Interface(menu)
 
 actual = capsys.interface.start_ordering()
 
-expected = """Welcome! Please enter the item number to add to your order.
+expected = """Welcome! Please enter the item number to add_dish to your order.
 
 (1) Burger : £5.99
 (2) Pizza : £10.99
@@ -240,25 +278,25 @@ expected = """Welcome! Please enter the item number to add to your order.
 Please enter 'order' to see your order."""
 
 '''
-Given a menu and a user inputting 1
+Given a menu and a user inputting 2 then 1
 interface.start_ordering prints you have ordered a burger
 '''
 burger = Dish("Burger", 599)
 pizza = Dish("Pizza", 1099)
 menu = Menu()
-menu.add(burger)
-menu.add(pizza)
+menu.add_dish(burger)
+menu.add_dish(pizza)
 interface = Interface(menu)
 
 with patch('builtins.input', return_value='1')
     actual = capsys.interface.start_ordering()
 
     expected = """You have added a burger to your order
-    Please enter the item number to add another item to your order.
+    Please enter the item number to add_dish another item to your order.
     Enter 'order' to see your order"""
 
 '''
-Given a menu and a user inputting 1 then 2 then order
+Given a menu and a user inputting 1 then 2 then 'order'
 order is output to the console with total price
 '''
 #@patch('builtins.input')
@@ -266,8 +304,8 @@ order is output to the console with total price
 burger = Dish("Burger", 599)
 pizza = Dish("Pizza", 1099)
 menu = Menu()
-menu.add(burger)
-menu.add(pizza)
+menu.add_dish(burger)
+menu.add_dish(pizza)
 interface = Interface(menu)
 
 mock_inputs.side_effect = ['1', 'order']
@@ -294,15 +332,15 @@ order is output to the console with total price
 burger = Dish("Burger", 599)
 pizza = Dish("Pizza", 1099)
 menu = Menu()
-menu.add(burger)
-menu.add(pizza)
+menu.add_dish(burger)
+menu.add_dish(pizza)
 interface = Interface(menu)
 
 mock_inputs.side_effect = ['1', 'order', 'menu']
 
 actual = capsys.interface.start_ordering()
 
-expected = """Welcome! Please enter the item number to add to your order.
+expected = """Welcome! Please enter the item number to add_dish to your order.
 
 (1) Burger : £5.99
 (2) Pizza : £10.99
@@ -311,15 +349,15 @@ Please enter 'order' to see your order."""
 
 '''
 Given a menu and a user inputting 1 then order then 1
-an empty is output to the console with 0 total price
+an empty order is output to the console with 0 total price
 '''
 #@patch('builtins.input')
 #def test_
 burger = Dish("Burger", 599)
 pizza = Dish("Pizza", 1099)
 menu = Menu()
-menu.add(burger)
-menu.add(pizza)
+menu.add_dish(burger)
+menu.add_dish(pizza)
 interface = Interface(menu)
 
 mock_inputs.side_effect = ['1', 'order', '1']
@@ -345,8 +383,8 @@ the customer is asked to enter their phone number
 burger = Dish("Burger", 599)
 pizza = Dish("Pizza", 1099)
 menu = Menu()
-menu.add(burger)
-menu.add(pizza)
+menu.add_dish(burger)
+menu.add_dish(pizza)
 interface = Interface(menu)
 
 mock_inputs.side_effect = ['1', 'order', 'place']
@@ -364,8 +402,8 @@ the customer recieves confirmation that the order has been placed in th console
 burger = Dish("Burger", 599)
 pizza = Dish("Pizza", 1099)
 menu = Menu()
-menu.add(burger)
-menu.add(pizza)
+menu.add_dish(burger)
+menu.add_dish(pizza)
 interface = Interface(menu)
 
 mock_inputs.side_effect = ['1', 'order', 'place', "07000000000"]
@@ -384,8 +422,8 @@ the customer recieves confirmation that the order has been placed in th console
 burger = Dish("Burger", 599)
 pizza = Dish("Pizza", 1099)
 menu = Menu()
-menu.add(burger)
-menu.add(pizza)
+menu.add_dish(burger)
+menu.add_dish(pizza)
 interface = Interface(menu)
 client = Mock()
 interface.order_processer = OrderProcessor( "test_SID" , "test_Auth", client)
@@ -395,16 +433,162 @@ mock_inputs.side_effect = ['1', 'order', 'place', "07000000000"]
 
 
 client.messsages.create.assert_called_with(to="+447000000000", from_="+447000000001", body="Thank you! Your order was placed and will be delivered before 18:52")
+
 ```
 
-_Encode each example as a test. You can add to the above list as you go._
+_Encode each example as a test. You can add_dish to the above list as you go._
 
 ## 3. Create Example Unit Tests
 ``` python
+#Dish
+'''
+Test Dish initializes with correct name
+'''
+burger = Dish("Burger", 1000)
 
+actual = burger.name
 
+expected = burger
+
+'''
+Test Dish initializes with correct price
+'''
+burger = Dish("Burger", 1000)
+
+actual = burger.price
+
+expected = 1000
+
+'''
+trying to initialise with wrong type of name
+throws an error
+'''
+with pytest.raises(TypeError) as err:
+
+with pytest.raises(TypeError) as err:
+    burger = Dish(3, 10)
+
+error_message = str(err.value)
+
+expected = "Name must be a string."
+
+'''
+trying to initialise with wrong type of price
+throws an error
+'''
+with pytest.raises(TypeError) as err:
+
+with pytest.raises(TypeError) as err:
+    burger = Dish("Burger", 10.00)
+
+error_message = str(err.value)
+
+expected = "Price must be an Integer."
+
+'''
+test modifying name to an ivalid type 
+throws an error
+'''
+burger = Dish("Burger", 1000)
+
+with pytest.raises(TypeError) as err:
+    burger.name = 3
+
+error_message = str(err.value)
+
+expected = "Name must be a string."
+
+'''
+test modifying price to an ivalid type 
+throws an error
+'''
+burger = Dish("Burger", 1000)
+
+with pytest.raises(TypeError) as err:
+    burger.name = 10.99
+
+error_message = str(err.value)
+
+expected = "Price must be an integer."
+
+#Menu
+'''
+Menu Constructs
+'''
+menu = Menu()
+
+actual = menu.get_menu()
+
+expected = []
+
+'''
+Adding a non Dish to the menu
+Throws an error
+'''
+menu = Menu()
+
+with pytest.raises(TypeError) as err:
+    menu.add_dish(3)
+
+error_message = str(err.value)
+
+expected = "Only dishes can be added to menu."
+
+#Order
+'''
+Order Constructs
+'''
+order = Order()
+
+actual = order.get_dishes()
+
+expected = []
+
+'''
+calling remove on a dish which isnt in order 
+Throws an error
+'''
+order = Order()
+
+with pytest.raises(IndexError) as err:
+    order.remove_dish(1)
+
+error_message = str(err.value)
+
+actual = "Invalid selection to remove from order"
+
+#OrderProcessor Processor
+'''
+OrderProcessor Constructs
+'''
+client = Mock()
+order_processor = OrderProcessor("SID", "Auth_key", client)
+
+actual = order_processor._OrderProcessor__client
+
+expected = client
+
+#Interface
+'''
+OrderProcessor Constructs
+'''
+menu = Mock()
+interface = Interface(menu)
+
+actual = interface._Interface___menu
+
+expected = menu
+
+#TODO
+#test menu for get_dish if nothing on menu
+#Test order get_total_price with an empty list
+#Test interface if menu is empty 
+#Test interface if invalid input is entered
+#Test interface if removing item not in order
+#Test interface if adding item not on menu
+#
 ```
-_Encode each example as a test. You can add to the above list as you go._
+_Encode each example as a test. You can add_dish to the above list as you go._
 
 ## 4. Implement the Behaviour
 
