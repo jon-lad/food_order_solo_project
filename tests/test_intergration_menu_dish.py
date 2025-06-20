@@ -8,7 +8,7 @@ we can add it to the menu
 '''
 def test_adding_dish_to_menu():
     menu = Menu()
-    burger = Dish("Burger", 599)
+    burger = Dish("Edge_case", 599)
 
     menu.add_dish(burger)
 
@@ -22,7 +22,7 @@ def test_adding_dish_to_menu():
 Given multiple of the same Dish
 get_menu only returns unique dishes
 '''
-@pytest.mark.skip(reason="Not core functionality")
+@pytest.mark.skip(reason="Edge case")
 def test_adding_the_same_dish_only_adds_one():
     menu = Menu()
     burger = Dish("Burger", 599)
@@ -40,7 +40,7 @@ def test_adding_the_same_dish_only_adds_one():
 Given different Dishes with the same attributes
 get_menu only returns unique dishes
 '''
-@pytest.mark.skip(reason="Not core functionality")
+@pytest.mark.skip(reason="Edge case")
 def test_adding_identical_dishes_adds_one():
     menu = Menu()
     burger = Dish("Burger", 599)

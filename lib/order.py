@@ -1,29 +1,15 @@
 class Order:
     def __init__(self):
-        # Side effects:
-        #   Initialises the ordered list
-        pass # No code here yet
+        self.__ordered_items = []
     
     def add_dish(self, dish):
-        # Parameters:
-        #   dish: Dish
-        # Side effects:
-        #   adds a dish to the order
-        pass
+        self.__ordered_items.append(dish)
 
     def remove_dish(self, item_number):
-        # Parameters:
-        #   item_number: int (position of the dish to be removed)
-        # Side effects:
-        #   adds a dish to the order
-        pass # no code here yet
+        self.__ordered_items.pop(item_number - 1)
 
     def get_dishes(self):
-        # Returns:
-        #   a list of dishes ordered
-        pass # No code here yet
+        return self.__ordered_items
 
     def get_total_price(self):
-        # Returns:
-        #   the total price of the items in the order
-        pass # No code here yet
+        return sum(dish.price for dish in self.__ordered_items)
